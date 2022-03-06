@@ -16,15 +16,17 @@ import json
 import random
 from replit import db
 
+import sentiment_analysisS
+
 client = discord.Client()
 
-sad_words = ["sad", "depressed", "angry", "unhappy", "miserable", "depressing"]
+# sad_words = ["sad", "depressed", "angry", "unhappy", "miserable", "depressing"]
 
-encouragements = ["Hang in there.",
-                  "Cheer Up!",
-                  "You are a great person",
-                  "You’ve got this! Don't give up.",
-                  "You can overcome any obstacle."]
+# encouragements = ["Hang in there.",
+#                   "Cheer Up!",
+#                   "You are a great person",
+#                   "You’ve got this! Don't give up.",
+#                   "You can overcome any obstacle."]
 
 
 # Helper function that fetches random API quotes
@@ -56,8 +58,15 @@ async def on_message(message):
         quote = get_quote()
         await message.channel.send(quote)
 
-    if any(word in msg for word in sad_words):
-        await message.channel.send(random.choice(encouragements))
+    # if any(word in msg for word in sad_words):
+    #     await message.channel.send(random.choice(encouragements))
+
+    # sentiment analysis of user text
+    # sentiment_analysis.run_sentiment(msg)
+    sentiment_score = sentiment_analysis.run_sentiment(msg)
+    if sentiment_score <= -0.3:
+        quote = get_quote()
+        await message.channel.send(quote)
 
 
 @client.event
